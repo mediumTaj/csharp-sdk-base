@@ -77,6 +77,37 @@ namespace IBM.Watson.DeveloperCloud.Services.ToneAnalyzer.v3
       return connector.Send(req);
     }
 
+    /// <summary>
+    /// Gets the tone analyze using GET.
+    /// </summary>
+    /// <returns><c>true</c>, if tone analyze was gotten, <c>false</c> otherwise.</returns>
+    /// <param name="callback">Callback.</param>
+    /// <param name="text">Text.</param>
+    /// <param name="data">Data.</param>
+    public bool GetToneAnalyze(string text, OnGetToneAnalyzed callback, string data = null)
+    {
+      if (callback == null)
+        throw new ArgumentNullException("callback");
+
+      RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, FUNCTION_TONE);
+      if (connector == null)
+        return false;
+
+      GetToneAnalyzerRequest req = new GetToneAnalyzerRequest();
+      req.Callback = callback;
+      req.OnResponse = GetToneAnalyzerResponse;
+
+      //Dictionary<string, string> upload = new Dictionary<string, string>();
+      //upload["text"] = "\"" + text + "\"";
+      //req.Send = Encoding.UTF8.GetBytes(Json.Serialize(upload));
+      req.Data = data;
+      req.Headers["Content-Type"] = "application/json";
+      req.Parameters["version"] = "2016-02-11";
+      req.Parameters["sentences"] = "true";
+      req.Parameters["text"] = text;
+      return connector.Send(req);
+    }
+
     private class GetToneAnalyzerRequest : RESTConnector.Request
     {
       public string Data { get; set; }
