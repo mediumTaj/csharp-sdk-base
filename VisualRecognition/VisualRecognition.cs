@@ -15,8 +15,6 @@
 *
 */
 
-using UnityEngine;
-using IBM.Watson.DeveloperCloud.Services;
 using FullSerializer;
 using IBM.Watson.DeveloperCloud.Utilities;
 using IBM.Watson.DeveloperCloud.Logging;
@@ -25,8 +23,6 @@ using IBM.Watson.DeveloperCloud.Connection;
 using System.Text;
 using System.Collections.Generic;
 using System.IO;
-using MiniJSON;
-using System.Collections;
 
 namespace IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3
 {
