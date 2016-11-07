@@ -322,6 +322,108 @@ namespace IBM.Watson.DeveloperCloud.Services.RetrieveAndRank.v1
     /// </summary>
     public string[] Collections { get; set; }
   }
+
+  /// <summary>
+  /// The disk and memory usage for a cluster.
+  /// </summary>
+  [fsObject]
+  public class StatsResponse
+  {
+    /// <summary>
+    /// The disk usage.
+    /// </summary>
+    public DiskUsageResults[] disk_usage { get; set; }
+    /// <summary>
+    /// The memory usage.
+    /// </summary>
+    public MemUsageResults[] memory_usage { get; set; }
+  }
+
+  /// <summary>
+  /// The disk usage results object.
+  /// </summary>
+  [fsObject]
+  public class DiskUsageResults
+  {
+    /// <summary>
+    /// Number of bytes used on the cluster's disk capacity.
+    /// </summary>
+    public int used_bytes { get; set; }
+    /// <summary>
+    /// Total number of bytes available in the cluster's disk capacity.
+    /// </summary>
+    public int total_bytes { get; set; }
+    /// <summary>
+    /// Amount of disk capacity used, in KB or GB format.
+    /// </summary>
+    public string used { get; set; }
+    /// <summary>
+    /// Total amount of the cluster's disk capacity, in KB or GB format.
+    /// </summary>
+    public string total { get; set; }
+    /// <summary>
+    /// Percentage of the cluster's disk capacity that is being used.
+    /// </summary>
+    public double percent_used { get; set; }
+  }
+
+  /// <summary>
+  /// The memory usage results object.
+  /// </summary>
+  [fsObject]
+  public class MemUsageResults
+  {
+    /// <summary>
+    /// Number of bytes used in the cluster's memory capacity.
+    /// </summary>
+    public int used_bytes { get; set; }
+    /// <summary>
+    /// Total number of bytes available in the cluster's memory capacity.
+    /// </summary>
+    public int total_bytes { get; set; }
+    /// <summary>
+    /// Amount of memory capacity used, in KB or GB format.
+    /// </summary>
+    public string used { get; set; }
+    /// <summary>
+    /// Total amount of the cluster's memory capacity, in KB or GB format.
+    /// </summary>
+    public string total { get; set; }
+    /// <summary>
+    /// Percentage of the cluster's memory capacity that is being used.
+    /// </summary>
+    public double percent_used { get; set; }
+  }
+  #endregion
+
+  #region Cluster Resize
+  /// <summary>
+  /// The resize response object.
+  /// </summary>
+  [fsObject]
+  public class ResizeResponse
+  {
+    /// <summary>
+    /// Unique identifier for this cluster.
+    /// </summary>
+    public string cluster_id { get; set; }
+    /// <summary>
+    /// Current size of the cluster.
+    /// </summary>
+    public int cluster_size { get; set; }
+    /// <summary>
+    /// Target size of the cluster.
+    /// </summary>
+    public int target_cluster_size { get; set; }
+    /// <summary>
+    /// Message from the resize request.
+    /// </summary>
+    public string message { get; set; }
+    /// <summary>
+    /// Status of the resize request.
+    /// </summary>
+    public string status { get; set; }
+  }
   #endregion
 
   #region Rankers

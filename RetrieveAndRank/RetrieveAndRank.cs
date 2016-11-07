@@ -15,8 +15,6 @@
 *
 */
 
-using UnityEngine;
-using System.Collections;
 using IBM.Watson.DeveloperCloud.Connection;
 using IBM.Watson.DeveloperCloud.Utilities;
 using IBM.Watson.DeveloperCloud.Logging;
@@ -55,6 +53,10 @@ namespace IBM.Watson.DeveloperCloud.Services.RetrieveAndRank.v1
     private const string SERVICE_CLUSTER_COLLECTION_SELECT = "/v1/solr_clusters/{0}/solr/{1}/select";
     //  Search Solr ranked query parser.
     private const string SERVICE_CLUSTER_COLLECTION_FCSELECT = "/v1/solr_clusters/{0}/solr/{1}/fcselect";
+    //  Retrieves disk and memory usage for a cluster.
+    private const string SERVICE_CLUSTER_STATS = "/v1/solr_clusters/{0}/stats";
+    //  Get the status of a cluster resize operation and resizes a cluster.
+    private const string SERVICE_CLUSTER_RESIZE = "/v1/solr_clusters/{0}/cluster_size";
 
     //  List rankers or create ranker.
     private const string SERVICE_RANKERS = "/v1/rankers";
@@ -175,7 +177,7 @@ namespace IBM.Watson.DeveloperCloud.Services.RetrieveAndRank.v1
     /// <summary>
     /// Provisions a Solr cluster asynchronously. When the operation is successful, the status of the cluster is set to NOT_AVAILABLE. The status must be READY before you can use the cluster. For information about cluster sizing see http://www.ibm.com/watson/developercloud/doc/retrieve-rank/solr_ops.shtml#sizing.
     /// </summary>
-    /// <param name="callback"></param>
+    /// <param name="callback">The callback delegate</param>
     /// <param name="clusterName">Name to identify the cluster.</param>
     /// <param name="clusterSize">Size of the cluster to create. Ranges from 1 to 7. Send an empty value to create a small free cluster for testing. You can create only one free cluster.</param>
     /// <param name="customData"></param>
@@ -1170,7 +1172,278 @@ namespace IBM.Watson.DeveloperCloud.Services.RetrieveAndRank.v1
     }
     #endregion
 
-    #region GetRankers
+    #region Get Cluster Statistics
+    /// <summary>
+    /// OnGetClusterStats delegate.
+    /// </summary>
+    /// <param name="resp">Stats response.</param>
+    /// <param name="data">Optional custom data.</param>
+    public delegate void OnGetClusterStats(StatsResponse resp, string data);
+
+    /// <summary>
+    /// Retrieves disk and memory usage for a cluster.
+    /// </summary>
+    /// <param name="callback">OnGetClusterStats callback delegate.</param>
+    /// <param name="clusterID">The cluster identifier to query statistics.</param>
+    /// <param name="customData">Optional custom data.</param>
+    /// <returns></returns>
+    public bool GetClusterStats(OnGetClusterStats callback, string clusterID, string customData = default(string))
+    {
+      if (callback == null)
+        throw new ArgumentNullException("callback");
+      if (string.IsNullOrEmpty(clusterID))
+        throw new ArgumentException("clusterID");
+
+      GetClusterStatsRequest req = new GetClusterStatsRequest();
+      req.Callback = callback;
+      req.ClusterID = clusterID;
+      req.Data = customData;
+      req.Timeout = REQUEST_TIMEOUT;
+
+      RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, string.Format(SERVICE_CLUSTER_STATS, clusterID));
+      if (connector == null)
+        return false;
+
+      req.OnResponse = OnGetClusterStatsResponse;
+      return connector.Send(req);
+    }
+
+    /// <summary>
+    /// The GetClusterStats request.
+    /// </summary>
+    public class GetClusterStatsRequest : RESTConnector.Request
+    {
+      /// <summary>
+      /// Custom data.
+      /// </summary>
+      public string Data { get; set; }
+      /// <summary>
+      /// The cluster identifier to query.
+      /// </summary>
+      public string ClusterID { get; set; }
+      /// <summary>
+      /// The callback.
+      /// </summary>
+      public OnGetClusterStats Callback { get; set; }
+    }
+
+    private void OnGetClusterStatsResponse(RESTConnector.Request req, RESTConnector.Response resp)
+    {
+      StatsResponse clusterStats = new StatsResponse();
+      if (resp.Success)
+      {
+        try
+        {
+          fsData data = null;
+          fsResult r = fsJsonParser.Parse(Encoding.UTF8.GetString(resp.Data), out data);
+          if (!r.Succeeded)
+            throw new WatsonException(r.FormattedMessages);
+
+          object obj = clusterStats;
+          r = sm_Serializer.TryDeserialize(data, obj.GetType(), ref obj);
+          if (!r.Succeeded)
+            throw new WatsonException(r.FormattedMessages);
+        }
+        catch (Exception e)
+        {
+          Log.Error("RetriveAndRank", "OnGetClusterStatsResponse Exception: {0}", e.ToString());
+          resp.Success = false;
+        }
+      }
+
+      if (((GetClusterStatsRequest)req).Callback != null)
+        ((GetClusterStatsRequest)req).Callback(resp.Success ? clusterStats : null, ((GetClusterStatsRequest)req).Data);
+    }
+    #endregion
+
+    #region Get Cluster Resize Status
+    /// <summary>
+    /// OnGetClusterResizeStatus delegate.
+    /// </summary>
+    /// <param name="resp">Resize response.</param>
+    /// <param name="data">Optional custom data.</param>
+    public delegate void OnGetClusterResizeStatus(ResizeResponse resp, string data);
+
+    /// <summary>
+    /// Get the status of a cluster resize operation.
+    /// </summary>
+    /// <param name="callback">OnGetClusterStats callback delegate.</param>
+    /// <param name="clusterID">The cluster identifier to query resize status.</param>
+    /// <param name="customData">Optional custom data.</param>
+    /// <returns></returns>
+    public bool GetClusterResizeStatus(OnGetClusterResizeStatus callback, string clusterID, string customData = default(string))
+    {
+      if (callback == null)
+        throw new ArgumentNullException("callback");
+      if (string.IsNullOrEmpty(clusterID))
+        throw new ArgumentException("clusterID");
+
+      GetClusterResizeStatusRequest req = new GetClusterResizeStatusRequest();
+      req.Callback = callback;
+      req.ClusterID = clusterID;
+      req.Data = customData;
+      req.Timeout = REQUEST_TIMEOUT;
+
+      RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, string.Format(SERVICE_CLUSTER_RESIZE, clusterID));
+      if (connector == null)
+        return false;
+
+      req.OnResponse = OnGetClusterResizeStatusResponse;
+      return connector.Send(req);
+    }
+
+    /// <summary>
+    /// The GetClusterStats request.
+    /// </summary>
+    public class GetClusterResizeStatusRequest : RESTConnector.Request
+    {
+      /// <summary>
+      /// Custom data.
+      /// </summary>
+      public string Data { get; set; }
+      /// <summary>
+      /// The cluster identifier to query.
+      /// </summary>
+      public string ClusterID { get; set; }
+      /// <summary>
+      /// The callback.
+      /// </summary>
+      public OnGetClusterResizeStatus Callback { get; set; }
+    }
+
+    private void OnGetClusterResizeStatusResponse(RESTConnector.Request req, RESTConnector.Response resp)
+    {
+      ResizeResponse clusterResizeStatus = new ResizeResponse();
+      if (resp.Success)
+      {
+        try
+        {
+          fsData data = null;
+          fsResult r = fsJsonParser.Parse(Encoding.UTF8.GetString(resp.Data), out data);
+          if (!r.Succeeded)
+            throw new WatsonException(r.FormattedMessages);
+
+          object obj = clusterResizeStatus;
+          r = sm_Serializer.TryDeserialize(data, obj.GetType(), ref obj);
+          if (!r.Succeeded)
+            throw new WatsonException(r.FormattedMessages);
+        }
+        catch (Exception e)
+        {
+          Log.Error("RetriveAndRank", "OnGetClusterResizeStatusResponse Exception: {0}", e.ToString());
+          resp.Success = false;
+        }
+      }
+
+      if (((GetClusterResizeStatusRequest)req).Callback != null)
+        ((GetClusterResizeStatusRequest)req).Callback(resp.Success ? clusterResizeStatus : null, ((GetClusterResizeStatusRequest)req).Data);
+    }
+    #endregion
+
+#if !UNITY_EDITOR //  Unity does not support PUT method.
+#region Resize SOLR Cluster
+    /// <summary>
+    /// OnResizeCluster delegate.
+    /// </summary>
+    /// <param name="resp">Resize response.</param>
+    /// <param name="data">Optional custom data.</param>
+    public delegate void OnResizeCluster(ResizeResponse resp, string data);
+
+    /// <summary>
+    /// Resize a cluster. For information about cluster sizing and units, see Sizing your Retrieve and Rank Cluster.Resizing a cluster is an asynchronous operation. To check the status of a resizing operation, use the GET /v1/solr_clusters/{solr_cluster_id}/cluster_size method.
+    /// </summary>
+    /// <param name="callback">OnGetClusterStats callback delegate.</param>
+    /// <param name="clusterID">The cluster to resize.</param>
+    /// <param name="newClusterSize">Requested new size of the cluster, in units. The permitted range is 1 to 7 units. For information and limitations, see [Sizing your Retrieve and Rank cluster](http://www.ibm.com/watson/developercloud/doc/retrieve-rank/solr_ops.shtml#sizing).</param>
+    /// <param name="customData">Optional custom data.</param>
+    /// <returns></returns>
+    public bool ResizeCluster(OnResizeCluster callback, string clusterID, int newClusterSize, string customData = default(string))
+    {
+      if (callback == null)
+        throw new ArgumentNullException("callback");
+      if (string.IsNullOrEmpty(clusterID))
+        throw new ArgumentException("clusterID");
+      if (newClusterSize < 1 || newClusterSize > 7)
+        throw new WatsonException("The permitted range is 1 to 7 units.");
+
+      ResizeClusterRequest req = new ResizeClusterRequest();
+      req.Callback = callback;
+      req.ClusterID = clusterID;
+      req.NewClusterSize = newClusterSize;
+      req.Data = customData;
+      req.Timeout = REQUEST_TIMEOUT;
+
+      //string reqJson = "{ \"cluster_size\": \"{0}\" }";
+      string reqString = "{ \n\t\"cluster_size\": \""+newClusterSize.ToString()+"\" \n}";
+
+      req.Headers["Content-Type"] = "application/json";
+      req.Headers["Accept"] = "application/json";
+      req.Send = Encoding.UTF8.GetBytes(reqString);
+      req.Put = true;
+
+      RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, string.Format(SERVICE_CLUSTER_RESIZE, clusterID));
+      if (connector == null)
+        return false;
+
+      req.OnResponse = OnResizeClusterResponse;
+      return connector.Send(req);
+    }
+
+    /// <summary>
+    /// The GetClusterStats request.
+    /// </summary>
+    public class ResizeClusterRequest : RESTConnector.Request
+    {
+      /// <summary>
+      /// Custom data.
+      /// </summary>
+      public string Data { get; set; }
+      /// <summary>
+      /// The cluster identifier to query.
+      /// </summary>
+      public string ClusterID { get; set; }
+      /// <summary>
+      /// Requested new size of the cluster, in units. The permitted range is 1 to 7 units. 
+      /// For information and limitations, see [Sizing your Retrieve and Rank cluster](http://www.ibm.com/watson/developercloud/doc/retrieve-rank/solr_ops.shtml#sizing).
+      /// </summary>
+      public int NewClusterSize { get; set; }
+      /// <summary>
+      /// The callback.
+      /// </summary>
+      public OnResizeCluster Callback { get; set; }
+    }
+
+    private void OnResizeClusterResponse(RESTConnector.Request req, RESTConnector.Response resp)
+    {
+      ResizeResponse clusterResizeStatus = new ResizeResponse();
+      if (resp.Success)
+      {
+        try
+        {
+          fsData data = null;
+          fsResult r = fsJsonParser.Parse(Encoding.UTF8.GetString(resp.Data), out data);
+          if (!r.Succeeded)
+            throw new WatsonException(r.FormattedMessages);
+
+          object obj = clusterResizeStatus;
+          r = sm_Serializer.TryDeserialize(data, obj.GetType(), ref obj);
+          if (!r.Succeeded)
+            throw new WatsonException(r.FormattedMessages);
+        }
+        catch (Exception e)
+        {
+          Log.Error("RetriveAndRank", "OnResizeClusterResponse Exception: {0}", e.ToString());
+          resp.Success = false;
+        }
+      }
+
+      if (((ResizeClusterRequest)req).Callback != null)
+        ((ResizeClusterRequest)req).Callback(resp.Success ? clusterResizeStatus : null, ((ResizeClusterRequest)req).Data);
+    }
+#endregion
+#endif
+
+#region GetRankers
     /// <summary>
     /// OnGetRankers delegate.
     /// </summary>
@@ -1244,11 +1517,11 @@ namespace IBM.Watson.DeveloperCloud.Services.RetrieveAndRank.v1
       if (((GetRankersRequest)req).Callback != null)
         ((GetRankersRequest)req).Callback(resp.Success ? rankersData : null, ((GetRankersRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region CreateRanker
+#region CreateRanker
     /// <summary>
-    /// OnCreateCluster callback delegate.
+    /// OnCreateRanker callback delegate.
     /// </summary>
     /// <param name="resp"></param>
     /// <param name="data"></param>
@@ -1358,9 +1631,9 @@ namespace IBM.Watson.DeveloperCloud.Services.RetrieveAndRank.v1
       if (((CreateRankerRequest)req).Callback != null)
         ((CreateRankerRequest)req).Callback(resp.Success ? rankerResponseData : null, ((CreateRankerRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Rank
+#region Rank
     /// <summary>
     /// OnRank callback delegate.
     /// </summary>
@@ -1476,9 +1749,9 @@ namespace IBM.Watson.DeveloperCloud.Services.RetrieveAndRank.v1
       if (((RankRequest)req).Callback != null)
         ((RankRequest)req).Callback(resp.Success ? rankData : null, ((RankRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region DeleteRanker
+#region DeleteRanker
     /// <summary>
     /// Delete Ranker callback delegate.
     /// </summary>
@@ -1546,9 +1819,9 @@ namespace IBM.Watson.DeveloperCloud.Services.RetrieveAndRank.v1
       if (((DeleteRankerRequest)req).Callback != null)
         ((DeleteRankerRequest)req).Callback(resp.Success, ((DeleteRankerRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region GetRankerInfo
+#region GetRankerInfo
     /// <summary>
     /// Get ranker info callback delegate.
     /// </summary>
@@ -1635,9 +1908,9 @@ namespace IBM.Watson.DeveloperCloud.Services.RetrieveAndRank.v1
       if (((GetRankerRequest)req).Callback != null)
         ((GetRankerRequest)req).Callback(resp.Success ? rankerData : null, ((GetRankerRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region IWatsonService Interface
+#region IWatsonService Interface
     /// <exclude />
     public string GetServiceID()
     {
@@ -1673,6 +1946,6 @@ namespace IBM.Watson.DeveloperCloud.Services.RetrieveAndRank.v1
           m_Callback(SERVICE_ID, clustersData != null);
       }
     };
-    #endregion
+#endregion
   }
 }
