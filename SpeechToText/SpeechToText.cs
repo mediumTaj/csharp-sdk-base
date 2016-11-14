@@ -25,7 +25,6 @@ using MiniJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Text;
 using FullSerializer;
 using System.IO;
@@ -448,7 +447,7 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
     {
       if (m_ListenSocket == null)
       {
-        m_ListenSocket = WSConnector.CreateConnector(SERVICE_ID, "/v1/recognize", "?model=" + WWW.EscapeURL(m_RecognizeModel));
+        m_ListenSocket = WSConnector.CreateConnector(SERVICE_ID, "/v1/recognize", "?model=" + Uri.EscapeUriString(m_RecognizeModel));
         if (m_ListenSocket == null)
           return false;
 
