@@ -656,6 +656,37 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       return connector.Send(req);
     }
 
+    public bool Recognize(byte[] data, OnRecognize callback)
+    {
+      if (data == null)
+        throw new ArgumentNullException("data");
+      if (callback == null)
+        throw new ArgumentNullException("callback");
+
+      RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, "/v1/recognize");
+      if (connector == null)
+        return false;
+
+      RecognizeRequest req = new RecognizeRequest();
+      req.Callback = callback;
+
+      req.Headers["Content-Type"] = "audio/wav";
+      req.Send = data;
+      if (req.Send.Length > MAX_RECOGNIZE_CLIP_SIZE)
+      {
+        Log.Error("SpeechToText", "AudioClip is too large for Recognize().");
+        return false;
+      }
+      req.Parameters["model"] = m_RecognizeModel;
+      req.Parameters["continuous"] = "false";
+      req.Parameters["max_alternatives"] = m_MaxAlternatives.ToString();
+      req.Parameters["timestamps"] = m_Timestamps ? "true" : "false";
+      req.Parameters["word_confidence"] = m_WordConfidence ? "true" : "false";
+      req.OnResponse = OnRecognizeResponse;
+
+      return connector.Send(req);
+    }
+
     private class RecognizeRequest : RESTConnector.Request
     {
       public AudioClip Clip { get; set; }
