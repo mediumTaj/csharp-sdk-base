@@ -87,7 +87,18 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v2
       req.Headers["Accept"] = accept;
       req.Headers["Accept-Language"] = acceptLanguage;
 
-      if (Path.IsPathRooted(source))
+      bool isValidPath = true;
+      foreach(char c in Path.GetInvalidFileNameChars())
+      {
+        if (!isValidPath)
+          break;
+
+        string s = c.ToString();
+        if (source.Contains(s))
+          isValidPath = false;
+      }
+
+      if (isValidPath && Path.IsPathRooted(source))
       {
         string jsonData = default(string);
         jsonData = File.ReadAllText(source);
@@ -170,7 +181,7 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v2
       {
         m_Service = service;
         m_Callback = callback;
-        string testString = "Testing personality insights";
+        string testString = "Facing certain defeat at the hands of a room-size I.B.M. computer on Wednesday evening, Ken Jennings, famous for winning 74 games in a row on the TV quiz show, acknowledged the obvious. \"I, for one, welcome our new computer overlords,\" he wrote on his video screen, borrowing a line from a \"Simpsons\" episode. From now on, if the answer is \"the computer champion on \"Jeopardy!,\" the question will be, \"What is Watson?\" For I.B.M., the showdown was not merely a well-publicized stunt and a $1 million prize, but proof that the company has taken a big step toward a world in which intelligent machines will understand and respond to humans, and perhaps inevitably, replace some of them.";
         if (!m_Service.GetProfile(OnGetProfile, testString, ContentType.TEXT_PLAIN, Language.ENGLISH))
           m_Callback(SERVICE_ID, false);
       }

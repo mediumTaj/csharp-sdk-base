@@ -28,7 +28,9 @@ using System.Collections.Generic;
 using System.Text;
 using FullSerializer;
 using System.IO;
-
+#if UNITY_2 || UNITY_3 || UNITY_4 || UNITY_5
+using UnityEngine;
+#endif
 namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
 {
   /// <summary>
@@ -37,7 +39,7 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
   /// </summary>
   public class SpeechToText : IWatsonService
   {
-    #region Constants
+#region Constants
     /// <summary>
     /// This ID is used to match up a configuration record with this service.
     /// </summary>
@@ -59,9 +61,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
     /// Size of a clip in bytes that can be sent through the Recognize function.
     /// </summary>
     private const int MAX_RECOGNIZE_CLIP_SIZE = 4 * (1024 * 1024);
-    #endregion
+#endregion
 
-    #region Public Types
+#region Public Types
     /// <summary>
     /// This callback is used to return errors through the OnError property.
     /// </summary>
@@ -77,9 +79,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
     /// Set this property to overload the internal file loading of this class.
     /// </summary>
     public LoadFileDelegate LoadFile { get; set; }
-    #endregion
+#endregion
 
-    #region Private Data
+#region Private Data
     private OnRecognize m_ListenCallback = null;        // Callback is set by StartListening()                                                             
     private WSConnector m_ListenSocket = null;          // WebSocket object used when StartListening() is invoked  
     private bool m_ListenActive = false;
@@ -97,9 +99,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
     private float m_SilenceThreshold = 0.03f;         // If the audio level is below this value, then it's considered silent.
     private int m_RecordingHZ = -1;
     private static fsSerializer sm_Serializer = new fsSerializer();
-    #endregion
+#endregion
 
-    #region Public Properties
+#region Public Properties
     /// <summary>
     /// True if StartListening() has been called.
     /// </summary>
@@ -158,9 +160,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
     /// then we consider it silence.
     /// </summary>
     public float SilenceThreshold { get { return m_SilenceThreshold; } set { m_SilenceThreshold = value; } }
-    #endregion
+#endregion
 
-    #region Get Models
+#region Get Models
     /// <summary>
     /// This callback object is used by the GetModels() method.
     /// </summary>
@@ -258,9 +260,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
 
       return null;
     }
-    #endregion
+#endregion
 
-    #region Get Model
+#region Get Model
     /// <summary>
     /// This callback object is used by the GetModel() method.
     /// </summary>
@@ -326,9 +328,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((GetModelRequest)req).Callback != null)
         ((GetModelRequest)req).Callback(resp.Success ? response : null);
     }
-    #endregion
+#endregion
 
-    #region Sessionless - Streaming
+#region Sessionless - Streaming
     /// <summary>
     /// This callback object is used by the Recognize() and StartListening() methods.
     /// </summary>
@@ -613,9 +615,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
           OnError("Disconnected from server.");
       }
     }
-    #endregion
+#endregion
 
-    #region Sessionless Non-Streaming
+#region Sessionless Non-Streaming
     /// <summary>
     /// This function POSTs the given audio clip the recognize function and convert speech into text. This function should be used
     /// only on AudioClips under 4MB once they have been converted into WAV format. Use the StartListening() for continuous
@@ -846,12 +848,12 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
         return null;
       }
     }
-    #endregion
+#endregion
 
-    #region Asynchronous
-    #endregion
+#region Asynchronous
+#endregion
 
-    #region Get Custom Models
+#region Get Custom Models
     /// <summary>
     /// This callback is used by the GetCustomizations() function.
     /// </summary>
@@ -920,9 +922,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((GetCustomizationsReq)req).Callback != null)
         ((GetCustomizationsReq)req).Callback(resp.Success ? customizations : null, ((GetCustomizationsReq)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Create Custom Model
+#region Create Custom Model
     /// <summary>
     /// Thid callback is used by the CreateCustomization() function.
     /// </summary>
@@ -1006,9 +1008,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((CreateCustomizationRequest)req).Callback != null)
         ((CreateCustomizationRequest)req).Callback(resp.Success ? customizationID : null, ((CreateCustomizationRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Delete Custom Model
+#region Delete Custom Model
     /// <summary>
     /// This callback is used by the DeleteCustomization() function.
     /// </summary>
@@ -1057,9 +1059,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((DeleteCustomizationRequest)req).Callback != null)
         ((DeleteCustomizationRequest)req).Callback(resp.Success, ((DeleteCustomizationRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Get Custom Model
+#region Get Custom Model
     /// <summary>
     /// This callback is used by the GetCusomization() function.
     /// </summary>
@@ -1129,9 +1131,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((GetCustomizationRequest)req).Callback != null)
         ((GetCustomizationRequest)req).Callback(resp.Success ? customization : null, ((GetCustomizationRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Train Custom Model
+#region Train Custom Model
     /// <summary>
     /// This callback is used by the TrainCustomization() function.
     /// </summary>
@@ -1191,9 +1193,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((TrainCustomizationRequest)req).Callback != null)
         ((TrainCustomizationRequest)req).Callback(resp.Success, ((TrainCustomizationRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Reset Custom Model
+#region Reset Custom Model
     /// <summary>
     /// This callback is used by the ResetCustomization() function.
     /// </summary>
@@ -1244,9 +1246,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((ResetCustomizationRequest)req).Callback != null)
         ((ResetCustomizationRequest)req).Callback(resp.Success, ((ResetCustomizationRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Upgrade Custom Model
+#region Upgrade Custom Model
     /// <summary>
     /// This callback is used by the UpgradeCustomization() function.
     /// </summary>
@@ -1297,9 +1299,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((UpgradeCustomizationRequest)req).Callback != null)
         ((UpgradeCustomizationRequest)req).Callback(resp.Success, ((UpgradeCustomizationRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Get Custom Corpora
+#region Get Custom Corpora
     /// <summary>
     /// This callback is used by the GetCustomCorpora() function.
     /// </summary>
@@ -1370,9 +1372,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((GetCustomCorporaReq)req).Callback != null)
         ((GetCustomCorporaReq)req).Callback(resp.Success ? corpora : null, ((GetCustomCorporaReq)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Delete Custom Corpus
+#region Delete Custom Corpus
     /// <summary>
     /// This callback is used by the DeleteCustomCorpus() function.
     /// </summary>
@@ -1426,9 +1428,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((DeleteCustomCorpusRequest)req).Callback != null)
         ((DeleteCustomCorpusRequest)req).Callback(resp.Success, ((DeleteCustomCorpusRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Add Custom Coprpus
+#region Add Custom Coprpus
     /// <summary>
     /// This callback is used by the AddCustomCorpus() function.
     /// </summary>
@@ -1561,9 +1563,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((AddCustomCorpusRequest)req).Callback != null)
         ((AddCustomCorpusRequest)req).Callback(resp.Success, ((AddCustomCorpusRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Get Custom Words
+#region Get Custom Words
     /// <summary>
     /// This callback is used by the GetCustomWords() function.
     /// </summary>
@@ -1636,9 +1638,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((GetCustomWordsReq)req).Callback != null)
         ((GetCustomWordsReq)req).Callback(resp.Success ? wordsList : null, ((GetCustomWordsReq)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Add Custom Words
+#region Add Custom Words
     /// <summary>
     /// This callback is used by the AddCustomWords() function.
     /// </summary>
@@ -1738,9 +1740,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((AddCustomWordsRequest)req).Callback != null)
         ((AddCustomWordsRequest)req).Callback(resp.Success, ((AddCustomWordsRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Delete Custom Word
+#region Delete Custom Word
     /// <summary>
     /// This callback is used by the DeleteCustomWord() function.
     /// </summary>
@@ -1793,9 +1795,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((DeleteCustomWordRequest)req).Callback != null)
         ((DeleteCustomWordRequest)req).Callback(resp.Success, ((DeleteCustomWordRequest)req).Data);
     }
-    #endregion
+#endregion
 
-    #region Get Custom Word
+#region Get Custom Word
     /// <summary>
     /// This callback is used by the GetCustomWord() function.
     /// </summary>
@@ -1870,9 +1872,9 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       if (((GetCustomWordReq)req).Callback != null)
         ((GetCustomWordReq)req).Callback(resp.Success ? word : null, ((GetCustomWordReq)req).Data);
     }
-    #endregion
+#endregion
 
-    #region IWatsonService interface
+#region IWatsonService interface
     /// <exclude />
     public string GetServiceID()
     {
@@ -1908,6 +1910,6 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
           m_Callback(SERVICE_ID, models != null);
       }
     };
-    #endregion
+#endregion
   }
 }
