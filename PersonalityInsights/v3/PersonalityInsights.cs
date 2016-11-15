@@ -22,7 +22,6 @@ using IBM.Watson.DeveloperCloud.Utilities;
 using System;
 using System.IO;
 using System.Text;
-using UnityEngine;
 
 namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
 {
@@ -78,7 +77,7 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
       req.Headers["Accept"] = accept;
       req.Headers["Accept-Language"] = acceptLanguage;
 
-      if (source.StartsWith(Application.dataPath))
+      if (Path.IsPathRooted(source))
       {
         string jsonData = default(string);
         jsonData = File.ReadAllText(source);
@@ -163,8 +162,8 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
       {
         m_Service = service;
         m_Callback = callback;
-        string dataPath = Application.dataPath + "/Watson/Examples/ServiceExamples/TestData/personalityInsights.json";
-        if (!m_Service.GetProfile(OnGetProfile, dataPath, ContentType.TEXT_PLAIN, ContentLanguage.ENGLISH))
+        string testString = "Testing personality insights";
+        if (!m_Service.GetProfile(OnGetProfile, testString, ContentType.TEXT_PLAIN, ContentLanguage.ENGLISH))
           m_Callback(SERVICE_ID, false);
       }
 

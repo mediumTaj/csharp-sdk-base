@@ -16,8 +16,6 @@
 */
 
 using FullSerializer;
-using UnityEngine;
-using System.Collections;
 
 namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v2
 {

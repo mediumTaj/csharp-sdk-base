@@ -656,12 +656,31 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       return connector.Send(req);
     }
 
-    public bool Recognize(byte[] data, OnRecognize callback)
+    /// <summary>
+    /// This function POSTs the given audio clip the recognize function and convert speech into text. This function should be used
+    /// only on AudioClips under 4MB once they have been converted into WAV format. Use the StartListening() for continuous
+    /// recognition of text.
+    /// 
+    /// The following mime types are accepted:
+    /// audio/flac
+    /// audio/l16(Also specify the sampling rate and number of channels; for example, audio/l16; rate=48000; channels=2. Ensure that the rate matches the rate at which the audio is captured and specify a maximum of 16 channels.)
+    /// audio/wav(Provide audio with a maximum of nine channels.)
+    /// audio/ogg;codecs=opus
+    /// audio/mulaw(Also specify the sampling rate at which the audio is captured.)
+    /// audio/basic(Use audio in this format only with narrowband models.)
+    /// </summary>
+    /// <param name="data">The binary audio data.</param>
+    /// <param name="mimeType">The mimeType of the audio data.</param>
+    /// <param name="callback">A callback to invoke with the results.</param>
+    /// <returns></returns>
+    public bool Recognize(byte[] data, string mimeType, OnRecognize callback)
     {
       if (data == null)
         throw new ArgumentNullException("data");
       if (callback == null)
         throw new ArgumentNullException("callback");
+      if (string.IsNullOrEmpty(mimeType))
+        throw new ArgumentNullException("mimeType");
 
       RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, "/v1/recognize");
       if (connector == null)
@@ -670,7 +689,7 @@ namespace IBM.Watson.DeveloperCloud.Services.SpeechToText.v1
       RecognizeRequest req = new RecognizeRequest();
       req.Callback = callback;
 
-      req.Headers["Content-Type"] = "audio/wav";
+      req.Headers["Content-Type"] = mimeType;
       req.Send = data;
       if (req.Send.Length > MAX_RECOGNIZE_CLIP_SIZE)
       {

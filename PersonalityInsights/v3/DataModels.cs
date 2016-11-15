@@ -15,15 +15,14 @@
 *
 */
 
-using UnityEngine;
-using System.Collections;
+using FullSerializer;
 
 namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
 {
   /// <summary>
   /// The Profile object.
   /// </summary>
-  [SerializeField]
+  [fsObject]
   public class Profile
   {
     /// <summary>
@@ -77,7 +76,7 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
   /// <summary>
   /// The Trait Tree Node object.
   /// </summary>
-  [SerializeField]
+  [fsObject]
   public class TraitTreeNode
   {
     /// <summary>
@@ -121,7 +120,7 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
   /// <summary>
   /// The Behavior Node object.
   /// </summary>
-  [SerializeField]
+  [fsObject]
   public class BehaviorNode
   {
     /// <summary>
@@ -147,7 +146,7 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
   /// <summary>
   /// The Consumption Preferences Category Node object.
   /// </summary>
-  [SerializeField]
+  [fsObject]
   public class ConsumptionPreferencesCategoryNode
   {
     /// <summary>
@@ -169,7 +168,7 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
   /// <summary>
   /// The Warning Object.
   /// </summary>
-  [SerializeField]
+  [fsObject]
   public class Warning
   {
     /// <summary>
@@ -194,7 +193,7 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
   /// <summary>
   /// The Consumption Preferences Node object.
   /// </summary>
-  [SerializeField]
+  [fsObject]
   public class ConsumptionPreferencesNode
   {
     /// <summary>
