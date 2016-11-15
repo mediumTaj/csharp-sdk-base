@@ -15,8 +15,6 @@
 *
 */
 
-using UnityEngine;
-using System.Collections;
 using FullSerializer;
 using System;
 using IBM.Watson.DeveloperCloud.Connection;
@@ -192,7 +190,8 @@ namespace IBM.Watson.DeveloperCloud.Services.DocumentConversion.v1
       {
         m_Service = service;
         m_Callback = callback;
-        string examplePath = Application.dataPath + "/Watson/Examples/ServiceExamples/TestData/watson_beats_jeopardy.html";
+        char separatorChar = Path.DirectorySeparatorChar;
+        string examplePath = System.Environment.CurrentDirectory + separatorChar + "Assets" + separatorChar + "Watson" + separatorChar + "Examples" + separatorChar + "ServiceExamples" + separatorChar + "TestData" + separatorChar + "watson_beats_jeopardy.html";
         if (!m_Service.ConvertDocument(OnConvertDocument, examplePath))
           m_Callback(SERVICE_ID, false);
       }

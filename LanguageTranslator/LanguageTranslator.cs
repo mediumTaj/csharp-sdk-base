@@ -15,7 +15,6 @@
 *
 */
 
-using UnityEngine;
 using System.Collections.Generic;
 using IBM.Watson.DeveloperCloud.Connection;
 using IBM.Watson.DeveloperCloud.Utilities;
@@ -271,7 +270,7 @@ namespace IBM.Watson.DeveloperCloud.Services.LanguageTranslator.v1
 
       GetModelReq req = new GetModelReq();
       req.Callback = callback;
-      req.Function = WWW.EscapeURL(model_id);
+      req.Function = Uri.EscapeUriString(model_id);
       req.OnResponse = GetModelResponse;
 
       return connector.Send(req);
