@@ -78,7 +78,7 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
       req.Headers["Accept-Language"] = acceptLanguage;
 
       bool isValidPath = true;
-      foreach (char c in Path.GetInvalidFileNameChars())
+      foreach (char c in Path.GetInvalidPathChars())
       {
         if (!isValidPath)
           break;
