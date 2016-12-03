@@ -93,7 +93,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_AUTHORS_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
