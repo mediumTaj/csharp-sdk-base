@@ -219,7 +219,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_RANKED_CONCEPTS_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://") && Path.IsPathRooted(source))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -338,7 +338,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_DATES_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -460,7 +460,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_EMOTION_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -601,7 +601,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_ENTITY_EXTRACTION_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -713,7 +713,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_DETECT_FEEDS_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         Log.Error("Alchemy Language", "A URL source is required for DetectFeeds!");
         return false;
@@ -837,7 +837,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_KEYWORD_EXTRACTION_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -952,7 +952,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_LANGUAGE_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -1064,7 +1064,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_MICROFORMAT_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         Log.Error("Alchemy Language", "A URL source is required for GetMicroformats!");
         return false;
@@ -1173,7 +1173,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_PUBLICATION_DATE_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -1321,7 +1321,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_RELATIONS_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -1436,7 +1436,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_TEXT_SENTIMENT_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -1555,7 +1555,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_TARGETED_SENTIMENT_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -1670,7 +1670,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_RANKED_TAXONOMY_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -1786,7 +1786,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_TEXT_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -1893,7 +1893,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_TEXT_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -1964,7 +1964,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_GET_TITLE_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
@@ -2155,7 +2155,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
         service = SERVICE_COMBINED_CALL_URL;
         req.Forms["url"] = new RESTConnector.Form(source);
       }
-      else if (Path.IsPathRooted(source) && !normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
+      else if (!normalizedSource.StartsWith("http://") && !normalizedSource.StartsWith("https://"))
       {
         if (Path.GetExtension(normalizedSource).EndsWith(".html"))
         {
