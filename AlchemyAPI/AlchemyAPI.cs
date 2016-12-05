@@ -103,7 +103,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetAuthors");
+          throw new WatsonException(string.Format("An HTML source is needed for GetAuthors, {0}", source));
       }
       else
       {
@@ -229,7 +229,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetRankedConcepts");
+          throw new WatsonException(string.Format("An HTML source is needed for GetRankedConcepts, {0}", source));
       }
       else
       {
@@ -348,7 +348,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for ExtractDates!");
+          throw new WatsonException(string.Format("An HTML source is needed for ExtractDates! {0}", source));
       }
       else
       {
@@ -470,7 +470,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetEmotions!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetEmotions! {0}", source));
       }
       else
       {
@@ -611,7 +611,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for ExtractEntities!");
+          throw new WatsonException(string.Format("An HTML source is needed for ExtractEntities! {0}", source));
       }
       else
       {
@@ -847,7 +847,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for Getkeywords!");
+          throw new WatsonException(string.Format("An HTML source is needed for Getkeywords! {0}", source));
       }
       else
       {
@@ -962,7 +962,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetLanguages!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetLanguages! {0}", source));
       }
       else
       {
@@ -1183,7 +1183,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetPubicationDate!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetPubicationDate! {0}", source));
       }
       else
       {
@@ -1331,7 +1331,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetRelations!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetRelations! {0}", source));
       }
       else
       {
@@ -1446,7 +1446,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetTextSentiment!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetTextSentiment! {0}", source));
       }
       else
       {
@@ -1565,7 +1565,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetTargetedSentiment!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetTargetedSentiment! {0}", source));
       }
       else
       {
@@ -1680,7 +1680,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetRankedTaxonomy!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetRankedTaxonomy! {0}", source));
       }
       else
       {
@@ -1796,7 +1796,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetText!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetText! {0}", source));
       }
       else
       {
@@ -1903,7 +1903,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetRawText!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetRawText! {0}", source));
       }
       else
       {
@@ -1974,7 +1974,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetTitle!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetTitle! {0}", source));
       }
       else
       {
@@ -2165,7 +2165,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           req.Forms["html"] = new RESTConnector.Form(htmlData);
         }
         else
-          throw new WatsonException("An HTML source is needed for GetCombinedData!");
+          throw new WatsonException(string.Format("An HTML source is needed for GetCombinedData! {0}", source));
       }
       else
       {
