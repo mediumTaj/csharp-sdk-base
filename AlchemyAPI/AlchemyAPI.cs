@@ -232,7 +232,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_GET_RANKED_CONCEPTS_HTML;
             string htmlData = default(string);
@@ -241,7 +241,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_GET_RANKED_CONCEPTS_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
@@ -361,7 +362,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_GET_DATES_HTML;
             string htmlData = default(string);
@@ -370,7 +371,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_GET_DATES_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
@@ -493,7 +495,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_GET_EMOTION_HTML;
             string htmlData = default(string);
@@ -502,7 +504,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_GET_EMOTION_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
@@ -644,7 +647,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_GET_ENTITY_EXTRACTION_HTML;
             string htmlData = default(string);
@@ -653,7 +656,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_GET_ENTITY_EXTRACTION_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
@@ -890,7 +894,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_GET_KEYWORD_EXTRACTION_HTML;
             string htmlData = default(string);
@@ -899,7 +903,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_GET_KEYWORD_EXTRACTION_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
@@ -1015,7 +1020,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_GET_LANGUAGE_HTML;
             string htmlData = default(string);
@@ -1024,7 +1029,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_GET_LANGUAGE_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
@@ -1394,7 +1400,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_GET_RELATIONS_HTML;
             string htmlData = default(string);
@@ -1403,7 +1409,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_GET_RELATIONS_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
@@ -1519,7 +1526,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_GET_TEXT_SENTIMENT_HTML;
             string htmlData = default(string);
@@ -1528,7 +1535,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_GET_TEXT_SENTIMENT_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
@@ -1648,7 +1656,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_GET_TARGETED_SENTIMENT_HTML;
             string htmlData = default(string);
@@ -1657,7 +1665,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_GET_TARGETED_SENTIMENT_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
@@ -1773,7 +1782,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_GET_RANKED_TAXONOMY_HTML;
             string htmlData = default(string);
@@ -1782,7 +1791,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_GET_RANKED_TAXONOMY_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
@@ -2253,7 +2263,7 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
       {
         try
         {
-          if (Path.GetExtension(source) == "html")
+          if (Path.IsPathRooted(Path.GetFullPath(source)))
           {
             service = SERVICE_COMBINED_CALL_HTML;
             string htmlData = default(string);
@@ -2262,7 +2272,8 @@ namespace IBM.Watson.DeveloperCloud.Services.AlchemyAPI.v1
           }
           else
           {
-            throw new WatsonException(string.Format("An HTML File is required! {0}", source));
+            service = SERVICE_COMBINED_CALL_TEXT;
+            req.Forms["text"] = new RESTConnector.Form(source);
           }
         }
         catch
