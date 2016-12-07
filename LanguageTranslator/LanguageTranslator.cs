@@ -386,8 +386,7 @@ namespace IBM.Watson.DeveloperCloud.Services.LanguageTranslator.v1
 
       IdentifyReq req = new IdentifyReq();
       req.Callback = callback;
-      req.Send = Encoding.UTF8.GetBytes(text);
-      req.Headers["Content-Type"] = "text/plain";
+      req.Parameters["text"] = text;
       req.OnResponse = OnIdentifyResponse;
 
       return connector.Send(req);
