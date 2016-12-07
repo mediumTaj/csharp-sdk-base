@@ -57,7 +57,7 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
       if (string.IsNullOrEmpty(source))
         throw new ArgumentNullException("A JSON or Text source is required for GetProfile!");
 
-      RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, SERVICE_GET_PROFILE);
+      RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, SERVICE_GET_PROFILE, false);
       if (connector == null)
         return false;
 
@@ -77,113 +77,106 @@ namespace IBM.Watson.DeveloperCloud.Services.PersonalityInsights.v3
       req.Headers["Accept"] = accept;
       req.Headers["Accept-Language"] = acceptLanguage;
 
-      bool isValidPath = true;
-      foreach (char c in Path.GetInvalidPathChars())
+      try
       {
-        if (!isValidPath)
-          break;
-
-        string s = c.ToString();
-        if (source.Contains(s))
-          isValidPath = false;
+        if (Path.IsPathRooted(Path.GetFullPath(source)))
+        {
+          string jsonData = default(string);
+          jsonData = File.ReadAllText(source);
+          req.Send = System.Text.Encoding.UTF8.GetBytes(jsonData);
+        }
       }
-
-      if (isValidPath && Path.IsPathRooted(source))
+      catch
       {
-        string jsonData = default(string);
-        jsonData = File.ReadAllText(source);
-        req.Send = System.Text.Encoding.UTF8.GetBytes(jsonData);
-      }
-      else
-      {
-        req.Send = System.Text.Encoding.UTF8.GetBytes(source);
+        req.Forms = new System.Collections.Generic.Dictionary<string, RESTConnector.Form>();
+        req.Forms.Add("text", new RESTConnector.Form(source));
       }
 
       return connector.Send(req);
     }
 
+  /// <summary>
+  /// Get profile request.
+  /// </summary>
+  public class GetProfileRequest : RESTConnector.Request
+  {
     /// <summary>
-    /// Get profile request.
+    /// The source string.
     /// </summary>
-    public class GetProfileRequest : RESTConnector.Request
-    {
-      /// <summary>
-      /// The source string.
-      /// </summary>
-      public string Source { get; set; }
-      /// <summary>
-      /// Custom data.
-      /// </summary>
-      public string Data { get; set; }
-      /// <summary>
-      /// The callback.
-      /// </summary>
-      public OnGetProfile Callback { get; set; }
-    }
-
-    private void GetProfileResponse(RESTConnector.Request req, RESTConnector.Response resp)
-    {
-      Profile response = new Profile();
-      if (resp.Success)
-      {
-        try
-        {
-          fsData data = null;
-          fsResult r = fsJsonParser.Parse(Encoding.UTF8.GetString(resp.Data), out data);
-          if (!r.Succeeded)
-            throw new WatsonException(r.FormattedMessages);
-
-          object obj = response;
-          r = sm_Serializer.TryDeserialize(data, obj.GetType(), ref obj);
-          if (!r.Succeeded)
-            throw new WatsonException(r.FormattedMessages);
-        }
-        catch (Exception e)
-        {
-          Log.Error("PersonalityInsights", "GetProfileResponse Exception: {0}", e.ToString());
-          resp.Success = false;
-        }
-      }
-
-      if (((GetProfileRequest)req).Callback != null)
-        ((GetProfileRequest)req).Callback(resp.Success ? response : null, ((GetProfileRequest)req).Data);
-    }
-    #endregion
-
-    #region IWatsonService implementation
-    public string GetServiceID()
-    {
-      return SERVICE_ID;
-    }
-
-    public void GetServiceStatus(ServiceStatus callback)
-    {
-      if (Utilities.Config.Instance.FindCredentials(SERVICE_ID) != null)
-        new CheckServiceStatus(this, callback);
-      else
-        callback(SERVICE_ID, false);
-    }
-
-    private class CheckServiceStatus
-    {
-      private PersonalityInsights m_Service = null;
-      private ServiceStatus m_Callback = null;
-
-      public CheckServiceStatus(PersonalityInsights service, ServiceStatus callback)
-      {
-        m_Service = service;
-        m_Callback = callback;
-        string testString = "Facing certain defeat at the hands of a room-size I.B.M. computer on Wednesday evening, Ken Jennings, famous for winning 74 games in a row on the TV quiz show, acknowledged the obvious. \"I, for one, welcome our new computer overlords,\" he wrote on his video screen, borrowing a line from a \"Simpsons\" episode. From now on, if the answer is \"the computer champion on \"Jeopardy!,\" the question will be, \"What is Watson?\" For I.B.M., the showdown was not merely a well-publicized stunt and a $1 million prize, but proof that the company has taken a big step toward a world in which intelligent machines will understand and respond to humans, and perhaps inevitably, replace some of them.";
-        if (!m_Service.GetProfile(OnGetProfile, testString, ContentType.TEXT_PLAIN, ContentLanguage.ENGLISH))
-          m_Callback(SERVICE_ID, false);
-      }
-
-      private void OnGetProfile(Profile resp, string data)
-      {
-        if (m_Callback != null)
-          m_Callback(SERVICE_ID, resp != null);
-      }
-    }
-    #endregion
+    public string Source { get; set; }
+    /// <summary>
+    /// Custom data.
+    /// </summary>
+    public string Data { get; set; }
+    /// <summary>
+    /// The callback.
+    /// </summary>
+    public OnGetProfile Callback { get; set; }
   }
+
+  private void GetProfileResponse(RESTConnector.Request req, RESTConnector.Response resp)
+  {
+    Profile response = new Profile();
+    if (resp.Success)
+    {
+      try
+      {
+        fsData data = null;
+        fsResult r = fsJsonParser.Parse(Encoding.UTF8.GetString(resp.Data), out data);
+        if (!r.Succeeded)
+          throw new WatsonException(r.FormattedMessages);
+
+        object obj = response;
+        r = sm_Serializer.TryDeserialize(data, obj.GetType(), ref obj);
+        if (!r.Succeeded)
+          throw new WatsonException(r.FormattedMessages);
+      }
+      catch (Exception e)
+      {
+        Log.Error("PersonalityInsights", "GetProfileResponse Exception: {0}", e.ToString());
+        resp.Success = false;
+      }
+    }
+
+    if (((GetProfileRequest)req).Callback != null)
+      ((GetProfileRequest)req).Callback(resp.Success ? response : null, ((GetProfileRequest)req).Data);
+  }
+  #endregion
+
+  #region IWatsonService implementation
+  public string GetServiceID()
+  {
+    return SERVICE_ID;
+  }
+
+  public void GetServiceStatus(ServiceStatus callback)
+  {
+    if (Utilities.Config.Instance.FindCredentials(SERVICE_ID) != null)
+      new CheckServiceStatus(this, callback);
+    else
+      callback(SERVICE_ID, false);
+  }
+
+  private class CheckServiceStatus
+  {
+    private PersonalityInsights m_Service = null;
+    private ServiceStatus m_Callback = null;
+
+    public CheckServiceStatus(PersonalityInsights service, ServiceStatus callback)
+    {
+      m_Service = service;
+      m_Callback = callback;
+      string testString = "Facing certain defeat at the hands of a room-size I.B.M. computer on Wednesday evening, Ken Jennings, famous for winning 74 games in a row on the TV quiz show, acknowledged the obvious. \"I, for one, welcome our new computer overlords,\" he wrote on his video screen, borrowing a line from a \"Simpsons\" episode. From now on, if the answer is \"the computer champion on \"Jeopardy!,\" the question will be, \"What is Watson?\" For I.B.M., the showdown was not merely a well-publicized stunt and a $1 million prize, but proof that the company has taken a big step toward a world in which intelligent machines will understand and respond to humans, and perhaps inevitably, replace some of them.";
+      if (!m_Service.GetProfile(OnGetProfile, testString, ContentType.TEXT_PLAIN, ContentLanguage.ENGLISH))
+        m_Callback(SERVICE_ID, false);
+    }
+
+    private void OnGetProfile(Profile resp, string data)
+    {
+      if (m_Callback != null)
+        m_Callback(SERVICE_ID, resp != null);
+    }
+  }
+  #endregion
+}
 }
