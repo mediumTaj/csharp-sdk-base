@@ -1,7 +1,7 @@
 ﻿
 
 
-using IBM.Watson.DeveloperCloud.Utilities;
+
 /**
 * Copyright 2015 IBM Corp. All Rights Reserved.
 *
@@ -20,6 +20,8 @@ using IBM.Watson.DeveloperCloud.Utilities;
 */
 using System;
 using System.Collections.Generic;
+using IBM.Watson.DeveloperCloud.Services.TradeoffAnalytics.v1;
+using IBM.Watson.DeveloperCloud.Utilities;
 
 namespace IBM.Watson.DeveloperCloud.Services
 {
