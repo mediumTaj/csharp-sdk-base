@@ -632,7 +632,10 @@ namespace IBM.Watson.DeveloperCloud.Services.VisualRecognition.v3
       req.Parameters["version"] = VisualRecognitionVersion.Version;
 
       if (imageData != null)
+      {
+        req.Headers["Content-Type"] = "application/x-www-form-urlencoded";
         req.Send = imageData;
+      }
 
       return connector.Send(req);
     }
