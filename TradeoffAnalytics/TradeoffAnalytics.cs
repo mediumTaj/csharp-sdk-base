@@ -15,7 +15,6 @@
 *
 */
 
-using UnityEngine;
 using System.Collections.Generic;
 using IBM.Watson.DeveloperCloud.Connection;
 using IBM.Watson.DeveloperCloud.Utilities;
