@@ -23,28 +23,28 @@ using System.Collections.Generic;
 
 namespace IBM.Watson.DeveloperCloud.Services
 {
-  /// <summary>
-  /// Callback for the GetServiceStatus() function.
-  /// </summary>
-  /// <param name="serviceID">The ID of the service.</param>
-  /// <param name="active">The status of the service, true is up, false is down.</param>
-  public delegate void ServiceStatus(string serviceID, bool active);
+    /// <summary>
+    /// Callback for the GetServiceStatus() function.
+    /// </summary>
+    /// <param name="serviceID">The ID of the service.</param>
+    /// <param name="active">The status of the service, true is up, false is down.</param>
+    public delegate void ServiceStatus(string serviceID, bool active);
 
-  /// <summary>
-  /// This interface defines common interface for all watson services.
-  /// </summary>
-  public interface IWatsonService
-  {
     /// <summary>
-    /// Returns the service ID.
+    /// This interface defines common interface for all watson services.
     /// </summary>
-    /// <returns>A string containing the service ID.</returns>
-    string GetServiceID();
-    /// <summary>
-    /// This should check if the service is up or down, and invoke the callback with the current
-    /// state of the service once determined.
-    /// </summary>
-    /// <param name="callback">The callback to invoke.</param>
-    void GetServiceStatus(ServiceStatus callback);
-  }
+    public interface IWatsonService
+    {
+        /// <summary>
+        /// Returns the service ID.
+        /// </summary>
+        /// <returns>A string containing the service ID.</returns>
+        string GetServiceID();
+        /// <summary>
+        /// This should check if the service is up or down, and invoke the callback with the current
+        /// state of the service once determined.
+        /// </summary>
+        /// <param name="callback">The callback to invoke.</param>
+        void GetServiceStatus(ServiceStatus callback);
+    }
 }

@@ -26,162 +26,162 @@ using FullSerializer;
 
 namespace IBM.Watson.DeveloperCloud.Services.ToneAnalyzer.v3
 {
-  /// <summary>
-  /// This class wraps the Tone Analyzer service.
-  /// <a href="http://www.ibm.com/watson/developercloud/tone-analyzer.html">Tone Analyzer Service</a>
-  /// </summary>
-  public class ToneAnalyzer : IWatsonService
-  {
-    #region Private Data
-    private const string SERVICE_ID = "ToneAnalyzerV3";
-    private static fsSerializer sm_Serializer = new fsSerializer();
-    #endregion
-
-    #region Get Tone
-    private const string FUNCTION_TONE = "/v3/tone";
-
     /// <summary>
-    /// The Get Tone Analyzed callback delegate.
+    /// This class wraps the Tone Analyzer service.
+    /// <a href="http://www.ibm.com/watson/developercloud/tone-analyzer.html">Tone Analyzer Service</a>
     /// </summary>
-    /// <param name="resp"></param>
-    /// <param name="data"></param>
-    public delegate void OnGetToneAnalyzed(ToneAnalyzerResponse resp, string data);
-
-    /// <summary>
-    /// Gets the tone analyze.
-    /// </summary>
-    /// <returns><c>true</c>, if tone analyze was gotten, <c>false</c> otherwise.</returns>
-    /// <param name="callback">Callback.</param>
-    /// <param name="text">Text.</param>
-    /// <param name="data">Data.</param>
-    public bool GetToneAnalyze(OnGetToneAnalyzed callback, string text, string data = null)
+    public class ToneAnalyzer : IWatsonService
     {
-      if (callback == null)
-        throw new ArgumentNullException("callback");
+        #region Private Data
+        private const string SERVICE_ID = "ToneAnalyzerV3";
+        private static fsSerializer sm_Serializer = new fsSerializer();
+        #endregion
 
-      RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, FUNCTION_TONE);
-      if (connector == null)
-        return false;
+        #region Get Tone
+        private const string FUNCTION_TONE = "/v3/tone";
 
-      GetToneAnalyzerRequest req = new GetToneAnalyzerRequest();
-      req.Callback = callback;
-      req.OnResponse = GetToneAnalyzerResponse;
+        /// <summary>
+        /// The Get Tone Analyzed callback delegate.
+        /// </summary>
+        /// <param name="resp"></param>
+        /// <param name="data"></param>
+        public delegate void OnGetToneAnalyzed(ToneAnalyzerResponse resp, string data);
 
-      Dictionary<string, string> upload = new Dictionary<string, string>();
-      upload["text"] = "\"" + text + "\"";
-      req.Send = Encoding.UTF8.GetBytes(Json.Serialize(upload));
-      req.Data = data;
-      req.Headers["Content-Type"] = "application/json";
-      req.Parameters["version"] = "2016-02-11";
-      req.Parameters["sentences"] = "true";
-      return connector.Send(req);
-    }
-
-    /// <summary>
-    /// Gets the tone analyze using GET.
-    /// </summary>
-    /// <returns><c>true</c>, if tone analyze was gotten, <c>false</c> otherwise.</returns>
-    /// <param name="callback">Callback.</param>
-    /// <param name="text">Text.</param>
-    /// <param name="data">Data.</param>
-    public bool GetToneAnalyze(string text, OnGetToneAnalyzed callback, string data = null)
-    {
-      if (callback == null)
-        throw new ArgumentNullException("callback");
-
-      RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, FUNCTION_TONE);
-      if (connector == null)
-        return false;
-
-      GetToneAnalyzerRequest req = new GetToneAnalyzerRequest();
-      req.Callback = callback;
-      req.OnResponse = GetToneAnalyzerResponse;
-
-      //Dictionary<string, string> upload = new Dictionary<string, string>();
-      //upload["text"] = "\"" + text + "\"";
-      //req.Send = Encoding.UTF8.GetBytes(Json.Serialize(upload));
-      req.Data = data;
-      req.Headers["Content-Type"] = "application/json";
-      req.Parameters["version"] = "2016-02-11";
-      req.Parameters["sentences"] = "true";
-      req.Parameters["text"] = text;
-      return connector.Send(req);
-    }
-
-    private class GetToneAnalyzerRequest : RESTConnector.Request
-    {
-      public string Data { get; set; }
-      public OnGetToneAnalyzed Callback { get; set; }
-    };
-
-    private void GetToneAnalyzerResponse(RESTConnector.Request req, RESTConnector.Response resp)
-    {
-      ToneAnalyzerResponse response = new ToneAnalyzerResponse();
-      if (resp.Success)
-      {
-        try
+        /// <summary>
+        /// Gets the tone analyze.
+        /// </summary>
+        /// <returns><c>true</c>, if tone analyze was gotten, <c>false</c> otherwise.</returns>
+        /// <param name="callback">Callback.</param>
+        /// <param name="text">Text.</param>
+        /// <param name="data">Data.</param>
+        public bool GetToneAnalyze(OnGetToneAnalyzed callback, string text, string data = null)
         {
-          fsData data = null;
-          fsResult r = fsJsonParser.Parse(Encoding.UTF8.GetString(resp.Data), out data);
-          if (!r.Succeeded)
-            throw new WatsonException(r.FormattedMessages);
+            if (callback == null)
+                throw new ArgumentNullException("callback");
 
-          object obj = response;
-          r = sm_Serializer.TryDeserialize(data, obj.GetType(), ref obj);
-          if (!r.Succeeded)
-            throw new WatsonException(r.FormattedMessages);
+            RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, FUNCTION_TONE);
+            if (connector == null)
+                return false;
+
+            GetToneAnalyzerRequest req = new GetToneAnalyzerRequest();
+            req.Callback = callback;
+            req.OnResponse = GetToneAnalyzerResponse;
+
+            Dictionary<string, string> upload = new Dictionary<string, string>();
+            upload["text"] = "\"" + text + "\"";
+            req.Send = Encoding.UTF8.GetBytes(Json.Serialize(upload));
+            req.Data = data;
+            req.Headers["Content-Type"] = "application/json";
+            req.Parameters["version"] = "2016-02-11";
+            req.Parameters["sentences"] = "true";
+            return connector.Send(req);
         }
-        catch (Exception e)
+
+        /// <summary>
+        /// Gets the tone analyze using GET.
+        /// </summary>
+        /// <returns><c>true</c>, if tone analyze was gotten, <c>false</c> otherwise.</returns>
+        /// <param name="callback">Callback.</param>
+        /// <param name="text">Text.</param>
+        /// <param name="data">Data.</param>
+        public bool GetToneAnalyze(string text, OnGetToneAnalyzed callback, string data = null)
         {
-          Log.Error("ToneAnalyzer", "GetToneAnalyzerResponse Exception: {0}", e.ToString());
-          resp.Success = false;
+            if (callback == null)
+                throw new ArgumentNullException("callback");
+
+            RESTConnector connector = RESTConnector.GetConnector(SERVICE_ID, FUNCTION_TONE);
+            if (connector == null)
+                return false;
+
+            GetToneAnalyzerRequest req = new GetToneAnalyzerRequest();
+            req.Callback = callback;
+            req.OnResponse = GetToneAnalyzerResponse;
+
+            //Dictionary<string, string> upload = new Dictionary<string, string>();
+            //upload["text"] = "\"" + text + "\"";
+            //req.Send = Encoding.UTF8.GetBytes(Json.Serialize(upload));
+            req.Data = data;
+            req.Headers["Content-Type"] = "application/json";
+            req.Parameters["version"] = "2016-02-11";
+            req.Parameters["sentences"] = "true";
+            req.Parameters["text"] = text;
+            return connector.Send(req);
         }
-      }
 
-      if (((GetToneAnalyzerRequest)req).Callback != null)
-        ((GetToneAnalyzerRequest)req).Callback(resp.Success ? response : null, ((GetToneAnalyzerRequest)req).Data);
+        private class GetToneAnalyzerRequest : RESTConnector.Request
+        {
+            public string Data { get; set; }
+            public OnGetToneAnalyzed Callback { get; set; }
+        };
+
+        private void GetToneAnalyzerResponse(RESTConnector.Request req, RESTConnector.Response resp)
+        {
+            ToneAnalyzerResponse response = new ToneAnalyzerResponse();
+            if (resp.Success)
+            {
+                try
+                {
+                    fsData data = null;
+                    fsResult r = fsJsonParser.Parse(Encoding.UTF8.GetString(resp.Data), out data);
+                    if (!r.Succeeded)
+                        throw new WatsonException(r.FormattedMessages);
+
+                    object obj = response;
+                    r = sm_Serializer.TryDeserialize(data, obj.GetType(), ref obj);
+                    if (!r.Succeeded)
+                        throw new WatsonException(r.FormattedMessages);
+                }
+                catch (Exception e)
+                {
+                    Log.Error("ToneAnalyzer", "GetToneAnalyzerResponse Exception: {0}", e.ToString());
+                    resp.Success = false;
+                }
+            }
+
+            if (((GetToneAnalyzerRequest)req).Callback != null)
+                ((GetToneAnalyzerRequest)req).Callback(resp.Success ? response : null, ((GetToneAnalyzerRequest)req).Data);
+        }
+
+
+        #endregion
+
+        #region IWatsonService interface
+        /// <exclude />
+        public string GetServiceID()
+        {
+            return SERVICE_ID;
+        }
+
+        /// <exclude />
+        public void GetServiceStatus(ServiceStatus callback)
+        {
+            if (Utilities.Config.Instance.FindCredentials(SERVICE_ID) != null)
+                new CheckServiceStatus(this, callback);
+            else
+                callback(SERVICE_ID, false);
+        }
+
+        private class CheckServiceStatus
+        {
+            private ToneAnalyzer m_Service = null;
+            private ServiceStatus m_Callback = null;
+
+            public CheckServiceStatus(ToneAnalyzer service, ServiceStatus callback)
+            {
+                m_Service = service;
+                m_Callback = callback;
+
+                if (!m_Service.GetToneAnalyze(OnGetToneAnalyzed, "Test"))
+                    m_Callback(SERVICE_ID, false);
+            }
+
+            private void OnGetToneAnalyzed(ToneAnalyzerResponse resp, string data)
+            {
+                if (m_Callback != null)
+                    m_Callback(SERVICE_ID, resp != null);
+            }
+        };
+        #endregion
     }
-
-
-    #endregion
-
-    #region IWatsonService interface
-    /// <exclude />
-    public string GetServiceID()
-    {
-      return SERVICE_ID;
-    }
-
-    /// <exclude />
-    public void GetServiceStatus(ServiceStatus callback)
-    {
-      if (Utilities.Config.Instance.FindCredentials(SERVICE_ID) != null)
-        new CheckServiceStatus(this, callback);
-      else
-        callback(SERVICE_ID, false);
-    }
-
-    private class CheckServiceStatus
-    {
-      private ToneAnalyzer m_Service = null;
-      private ServiceStatus m_Callback = null;
-
-      public CheckServiceStatus(ToneAnalyzer service, ServiceStatus callback)
-      {
-        m_Service = service;
-        m_Callback = callback;
-
-        if (!m_Service.GetToneAnalyze(OnGetToneAnalyzed, "Test"))
-          m_Callback(SERVICE_ID, false);
-      }
-
-      private void OnGetToneAnalyzed(ToneAnalyzerResponse resp, string data)
-      {
-        if (m_Callback != null)
-          m_Callback(SERVICE_ID, resp != null);
-      }
-    };
-    #endregion
-  }
 }
 
